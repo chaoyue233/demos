@@ -1,5 +1,8 @@
 package chaoyue.designPattert.observer;
 
+/**
+ * 天气数据基类 在当前例子中作为主题使用
+ */
 
 import java.util.Observable;
 
