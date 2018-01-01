@@ -1,4 +1,4 @@
-package chaoyue.thinkingInJava.study.chapter14.classtypeinfo;
+package chaoyue.thinkingInJava.study.chapter14.classTypeInfo;
 
 class Candy {
     static {
@@ -6,11 +6,22 @@ class Candy {
     }
 }
 
+class Gum {
+    static {
+        System.out.println("Loading Gum");
+    }
+}
+
 class Cookie {
     static {
         System.out.println("Loading Cookie");
     }
+    public static void f(){}
 }
+
+/**
+ * 类只在需要的时候才会初始化，不会一开始全部都初始化
+ */
 
 public class SweetShop {
     public static void main(String[] args) {
@@ -18,12 +29,12 @@ public class SweetShop {
         new Candy();
         System.out.println("after creating Candy");
         try {
-            Class.forName("Gum");
+            Class.forName("chaoyue.thinkingInJava.study.chapter14.classTypeInfo.Gum");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         System.out.println("after class.forName(Gum)");
-        new Cookie();
+        Cookie.f();
         System.out.println("After creating Cookie");
     }
 }
