@@ -1,5 +1,4 @@
-package chaoyue.thinkingInJava.study.chapter14.classTypeInfo.toys;
-import java.util.Date;
+package chaoyue.thinkingInJava.study.chapter14.classTypeInfo;
 
 interface HasBatteries {
 }
@@ -37,7 +36,7 @@ public class ToyTest {
     public static void main(String[] args) {
         Class c = null;
         try {
-            c = Class.forName("chaoyue.thinkingInJava.study.chapter14.classTypeInfo.toys.ToyFactory");
+            c = Class.forName("chaoyue.thinkingInJava.study.chapter14.classTypeInfo.ToyFactory");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
