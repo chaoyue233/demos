@@ -1,4 +1,4 @@
-package chaoyue.thread;
+package chaoyue.thinkingInJava.study.chapter21.thread;
 
 import java.util.ArrayList;
 import java.util.List;

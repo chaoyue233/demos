@@ -1,4 +1,4 @@
-package chaoyue.thread;
+package chaoyue.thinkingInJava.study.chapter21.thread;
 
 public class LiftOff implements Runnable {
   protected int countDown = 10;
