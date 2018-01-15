@@ -1,5 +1,8 @@
 package chaoyue.thinkingInJava.study.chapter21.thread;
 
+/**
+ * 简单多线程demo 通过实现Runnable接口来穿件多线程
+ */
 public class LiftOff implements Runnable {
   protected int countDown = 10;
   private static int taskCount = 0;
@@ -16,6 +19,7 @@ public class LiftOff implements Runnable {
     return "#" + id + "(" + (countDown > 0 ? countDown : "Liftoff!") + ").";
   }
 
+  // run方法内为具体的逻辑
   public void run() {
     while (countDown-- > 0) {
       try {
@@ -29,7 +33,8 @@ public class LiftOff implements Runnable {
   }
 
   public static void main(String[] args) {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 5; i++) {
+      // 使用Thread类来触发run方法中的逻辑 不可以直接调用run方法
       Thread t = new Thread(new LiftOff());
       t.start();
     }
