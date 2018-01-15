@@ -18,6 +18,7 @@ public class SimplePriorities implements Runnable {
   }
 
   public void run() {
+    // 通过使用setPriority() 可以调整线程的优先级 但也不是绝对的
     Thread.currentThread().setPriority(priority);
     while (true) {
       for (int i = 1; i < 100000; i++) {
