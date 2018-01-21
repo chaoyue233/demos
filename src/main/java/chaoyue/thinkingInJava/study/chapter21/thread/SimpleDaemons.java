@@ -1,6 +1,5 @@
-package chaoyue.thread;
+package chaoyue.thinkingInJava.study.chapter21.thread;
 
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleDaemons implements Runnable {
