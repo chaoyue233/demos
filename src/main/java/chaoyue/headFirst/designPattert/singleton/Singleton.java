@@ -12,6 +12,7 @@ public class Singleton {
 
   // synchronized 保证多线程之间安全问题
   public static synchronized Singleton getInstqance() {
+    // 要么在调动的时候进行初始化 这时就需要判断是否为空
     if (uniqueInstance == null) {
       uniqueInstance = new Singleton();
     }
