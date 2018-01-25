@@ -1,0 +1,35 @@
+# 关于简历中需要准备的几个点
+1、spring 重点
+    IOC https://www.cnblogs.com/ITtangtang/p/3978349.html#a1
+        重点关注 BeanFactory BeanDefinition
+        BeanFactory 工厂模式 默认实现都为 DefaultListableBeanFactory
+        ApplicationContext 送
+
+    AOP
+    MVC
+    事务控制原理
+2、Mybatis 源码相关（重点）
+
+3、数据库相关
+    主要包括 优化 索引 事务隔离级别等等
+
+4、消息队列相关
+    kafka
+    rabbitMQ
+
+5、常用的设计模式相关
+    策略模式 观察者模式 单例模式 抽象工厂&工厂方法。。。
+
+6、git相关操作指令
+
+7、dubbo相关常用问题
+
+8、数据结构基础
+    编写冒泡排序 B+数等概念
+
+9、JAVA相关（重点）
+    容器相关
+    IO相关
+    多线程相关
+    类加载相关
+    JVM相关
