@@ -6,6 +6,7 @@ package chaoyue.headFirst.designPattert.singleton;
 public class Singleton2 {
   private Singleton2() {
   }
+  // 要么在初始化的时候进行实例化
   private static Singleton2 singleton2 = new Singleton2();
 
   public static Singleton2 getInstance(){
