@@ -1,0 +1,165 @@
+# 关于简历中需要准备的几个点
+1、spring 重点
+    IOC https://www.cnblogs.com/ITtangtang/p/3978349.html#a1
+        重点关注 BeanFactory BeanDefinition
+        BeanFactory 工厂模式 默认实现都为 DefaultListableBeanFactory
+        ApplicationContext refresh()方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器
+        IOC容器的初始化步骤
+            通过 构造器的refresh()方法创建IOC容器
+            通过 ResourceLoader 来完成资源文件位置的定位
+            通过 BeanDefinitionReader来完成定义信息的解析和 Bean 信息的注册
+            通过 BeanDefinitionRegistry 完成注册 注册过程就是在 IOC 容器内部维护的一个HashMap 来保存得到的 BeanDefinition 的过程
+        当Spring IoC容器完成了Bean定义资源的定位、载入和解析注册以后，IoC容器中已经管理类Bean定义的相关数据，但是此时IoC容器还没有对所管理的Bean进行依赖注入
+        只有第一次通过getBean方法想IOC容器索要Bean时，或者配置了lazy-init时 才会触发依赖注入
+        Bean 单利模式 在容器创建之前从缓存中查找
+        Bean 原型模式 每次都会创建新的Bean实例对象
+        对于集合类型的属性 将其属性值解析为目标类型的集合后直接赋值给属性
+        对于非集合类型的属性 使用反射通过getter方法和setter方法
+        关于 @Autowiring 实现过程
+        1、对Bean的属性迭代调用getBean方法，完成Bean的初始化和依赖注入
+        2、将依赖Bean的属性引用设置到被依赖的Bean属性上
+        3、将依赖的Bean的名称和被依赖的Bean的名称储存在IOC容器的集合中
+    AOP http://www.importnew.com/24305.html
+        动态代理 AOP框架不会修改字节码，在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法
+        CGLIB是通过继承的方式做动态代理 如果一个类为final 则无法做动态代理
+        五种advice类型
+        前置通知[Before advice]：在连接点前面执行，前置通知不会影响连接点的执行，除非此处抛出异常。
+        正常返回通知[After returning advice]：在连接点正常执行完成后执行，如果连接点抛出异常，则不会执行。
+        异常返回通知[After throwing advice]：在连接点抛出异常后执行。
+        返回通知[After (finally) advice]：在连接点执行完成后执行，不管是正常执行完成，还是抛出异常，都会执行返回通知中的内容。
+        环绕通知[Around advice]：环绕通知围绕在连接点前后，比如一个方法调用的前后。这是最强大的通知类型，能在方法调用前后自定义一些操作。环绕通知还需要负责决定是继续处理join point(调用ProceedingJoinPoint的proceed方法)还是中断执行。
+    MVC
+        工作原理
+        1、解析http请求 如果映射路径匹配 web容器讲请求转交给DispatcherServlet
+        2、DispatcherServlet根据请求新消息和HandlerMapping的配置找到对应的Handler 由具体的HandlerAdapter对Handler进行具体调用
+        3、Handler处理完成 返回ModelAndView对象给DispatcherServlet
+        4、DispatcherServlet通过ViewResolver将ModelAndView转换成View
+
+    事务控制原理 @Transactional
+        主要包含三个部分
+        事务的切面
+            事务的切面是一个“around（环绕）”切面，在注解的业务方法前后都可以被调用。实现切面的具体类是TransactionInterceptor。
+            事务的切面有两个主要职责：
+            在’before’时，切面提供一个调用点，来决定被调用业务方法应该在正在进行事务的范围内运行，还是开始一个新的独立事务。
+            在’after’时，切面需要确定事务被提交，回滚或者继续运行。
+            在’before’时，事务切面自身不包含任何决策逻辑，是否开始新事务的决策委派给事务管理器完成。
+        事务管理器
+            事务管理器需要解决下面两个问题：
+
+            新的Entity Manager是否应该被创建？
+            是否应该开始新的事务？
+            这些需要事务切面’before’逻辑被调用时决定。事务管理器的决策基于以下两点：
+            事务是否正在进行
+            事务方法的propagation属性（比如REQUIRES_NEW总要开始新事务）
+            如果事务管理器确定要创建新事务，那么将：
+            创建一个新的entity manager
+            entity manager绑定到当前线程
+            从数据库连接池中获取连接
+            将连接绑定到当前线程
+            使用ThreadLocal变量将entity manager和数据库连接都绑定到当前线程。
+            事务运行时他们存储在线程中，当它们不再被使用时，事务管理器决定是否将他们清除。
+            程序的任何部分如果需要当前的entity manager和数据库连接都可以从线程中获取。
+        EntityManager Proxy
+
+2、Mybatis 源码相关（重点）
+    1、封装JDBC操作
+    2、利用反射打通Java类与SQL语句之间的相互转换
+    MyBatis的主要成员
+        Configuration        MyBatis所有的配置信息都保存在Configuration对象之中，配置文件中的大部分配置都会存储到该类中
+        SqlSession            作为MyBatis工作的主要顶层API，表示和数据库交互时的会话，完成必要数据库增删改查功能
+        Executor               MyBatis执行器，是MyBatis 调度的核心，负责SQL语句的生成和查询缓存的维护
+        StatementHandler 封装了JDBC Statement操作，负责对JDBC statement 的操作，如设置参数等
+        ParameterHandler  负责对用户传递的参数转换成JDBC Statement 所对应的数据类型
+        ResultSetHandler   负责将JDBC返回的ResultSet结果集对象转换成List类型的集合
+        TypeHandler          负责java数据类型和jdbc数据类型(也可以说是数据表列类型)之间的映射和转换
+        MappedStatement  MappedStatement维护一条<select|update|delete|insert>节点的封装
+        SqlSource              负责根据用户传递的parameterObject，动态地生成SQL语句，将信息封装到BoundSql对象中，并返回
+        BoundSql              表示动态生成的SQL语句以及相应的参数信息
+    MyBatis的初始化
+        MyBatis的初始化的过程其实就是解析配置文件和初始化Configuration的过程
+        首先会创建SqlSessionFactory建造者对象，然后由它进行创建SqlSessionFactory
+        XMLConfigBuilder对象会进行XML配置文件的解析，实际为configuration节点的解析操作。
+        在configuration节点下会依次解析properties/settings/.../mappers等节点配置。在解析environments节点时，会根据transactionManager的配置来创建事务管理器，根据dataSource的配置来创建DataSource对象，这里面包含了数据库登录的相关信息。在解析mappers节点时，会读取该节点下所有的mapper文件，然后进行解析，并将解析后的结果存到configuration对象中。
+        解析完MyBatis配置文件后，configuration就初始化完成了，然后根据configuration对象来创建SqlSession
+    MyBatis的SQL查询流程
+        该过程就是通过封装JDBC进行操作，然后使用Java反射技术完成JavaBean对象到数据库参数之间的相互转换，这种映射关系就是有TypeHandler对象来完成的，在获取数据表对应的元数据时，会保存该表所有列的数据库类型
+        创建sqlSession的过程其实就是根据configuration中的配置来创建对应的类，然后返回创建的sqlSession对象。调用selectOne方法进行SQL查询，selectOne方法最后调用的是selectList，在selectList中，会查询configuration中存储的MappedStatement对象，mapper文件中一个sql语句的配置对应一个MappedStatement对象，然后调用执行器进行查询操作。
+    MyBatis缓存
+        MyBatis提供了一级缓存和二级缓存。
+        一级缓存是SqlSession级别的缓存，每个SqlSession对象都有一个哈希表用于缓存数据，不同SqlSession对象之间缓存不共享。同一个SqlSession对象对象执行2遍相同的SQL查询，在第一次查询执行完毕后将结果缓存起来，这样第二遍查询就不用向数据库查询了，直接返回缓存结果即可。MyBatis默认是开启一级缓存的。
+        二级缓存是mapper级别的缓存，二级缓存是跨SqlSession的，多个SqlSession对象可以共享同一个二级缓存。不同的SqlSession对象执行两次相同的SQL语句，第一次会将查询结果进行缓存，第二次查询直接返回二级缓存中的结果即可。MyBatis默认是不开启二级缓存的
+        当SQL语句进行更新操作(删除/添加/更新)时，会清空对应的缓存，保证缓存中存储的都是最新的数据。
+
+3、数据库相关
+    主要包括 优化 索引 事务隔离级别等等 create index
+    索引的本质
+    在数据之外，数据库系统还维护着满足特定查找算法的数据结构。这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构就是索引。
+    InnoDB
+    因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整形。
+    索引类型
+        1、普通索引 没有任何限制
+        2、唯一索引 索引列的值必须唯一
+        3、单列索引 多列索引
+        4、组合索引
+    索引的缺点
+        虽然索引大大提高了查询速度，同时却会降低更新表的速度，如对表进行INSERT、UPDATE和DELETE。因为更新表时，MySQL不仅要保存数据，还要保存一下索引文件
+    索引使用注意事项
+        索引不会包含有NULL值的列
+        使用短索引
+        MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的
+        MySQL只对以下操作符才使用索引：<,<=,=,>,>=,between,in,以及某些时候的like(不以通配符%或_开头的情形)。而理论上每张表里面最多可创建16个索引
+
+4、消息队列相关
+    kafka
+        Kafka将消息以topic为单位进行归纳。
+        Kafka以集群的方式运行，可以由一个或多个服务组成，每个服务叫做一个broker.
+        producers通过网络将消息发送到Kafka集群，集群向消费者提供消息
+    rabbitMQ
+        Brocker：消息队列服务器实体。
+        Exchange：消息交换机，指定消息按什么规则，路由到哪个队列。
+        Queue：消息队列，每个消息都会被投入到一个或者多个队列里。
+        Binding：绑定，它的作用是把exchange和queue按照路由规则binding起来。
+        Routing Key：路由关键字，exchange根据这个关键字进行消息投递。
+        Vhost：虚拟主机，一个broker里可以开设多个vhost，用作不用用户的权限分离。
+        Producer：消息生产者，就是投递消息的程序。
+        Consumer：消息消费者，就是接受消息的程序。
+        Channel：消息通道，在客户端的每个连接里，可建立多个channel，每个channel代表一个会话任务。
+
+5、常用的设计模式相关
+    策略模式 观察者模式 单例模式 抽象工厂&工厂方法。。。
+
+6、git相关操作指令
+
+7、dubbo相关常用问题
+
+8、数据结构基础
+    编写冒泡排序 B+数等概念
+
+9、JAVA相关（重点）
+    容器相关
+    IO相关
+        io是面向流的，是就用多少拿多少。是阻塞的。数据量不大的或者不在意阻塞的时可以用。
+        nio是面向块的，先把数据搬过来，先存到缓存区里面，如果线程要用从缓存区拿。所以线程不需要时刻盯着io了，可以先做一些其他的事情，过几天再来看一下缓存。是同步非阻塞的。
+        因此，nio里有Buffer类作为缓冲区，Channel(通道)相当于io里的steam的抽象，Selector是nio提供的管理多个Channel的工具。nio出现也是因为io渐渐成为一些程序速度的瓶颈。
+        aio加了一个异步的特性。当我们要拿数据花费时间太长的时候，我们可以考虑使用异步的io。异步就是可以理解为，让io先处理者，我线程先去干别的事情了，你io处理完了通知我一下。
+        aio提供的事件处理接口CompletionHandler，定义了回调函数，这些函数再io完成后会被自动的调用。
+    多线程相关
+        java.util.current的主要方法简介
+            1、Executor接口 ExecutorService接口 实现多线程的另外一种方式
+            2、Executors 线程池 ThreadPoolExecutor
+    类加载相关
+        类加载过程大概分为五个阶段 加载 -> 链接（验证+准备+解析）-> 初始化 -> 使用 -> 卸载
+            （1）加载
+                通过类的全限定名获取字节流，转化为方法去运行时数据结构，生成Class对象（堆中）
+            （2）链接
+                验证：确保被加载类的正确性
+                准备：为类的静态变量分配内存，并初始化默认值（赋值操作在此时不会进行 在初始化时进行）
+                解析：把类中的符号引用转化为直接引用
+            （3）初始化
+                只有使用到的时候才进行初始化
+                静态变量、静态初始化块 -> 变量、初始化块 -> 构造器
+                如果有父类 父类static方法 -> 子类static方法 -> 父类构造方法 -> 子类构造方法
+    JVM相关
+
+10、python相关
+    Scrapy
