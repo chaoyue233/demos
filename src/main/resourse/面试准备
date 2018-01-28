@@ -163,3 +163,6 @@
 
 10、python相关
     Scrapy
+        获取URL 下载页面 解析数据 跟进URL 处理数据 保存数据
+    Python 标准数据库接口为 Python DB-API
+    MySQLdb 是用于Python链接Mysql数据库的接口，它实现了 Python 数据库 API 规范 V2.0。
