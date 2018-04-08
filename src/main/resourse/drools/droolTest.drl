@@ -1,0 +1,8 @@
+package droolTest;
+
+rule "HelloWorld"
+    when
+        eval(true)
+    then
+        System.out.println("HelloWorld");
+end
