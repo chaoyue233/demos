@@ -51,17 +51,18 @@ public class Server {
 
     public static void main(String[] args) throws MqttException, InterruptedException {
 
-        for (int i = 0; i < 1000; i++) {
-            Server server = new Server();
-            server.message = new MqttMessage();
-            server.message.setQos(2);
-            server.message.setRetained(true);
+        Server server = new Server();
+        server.message = new MqttMessage();
+        server.message.setQos(2);
+        server.message.setRetained(true);
+        for (int i = 0; i < 5; i++) {
             String message = "chaoyue_test_message_body " + i;
             server.message.setPayload(message.getBytes());
             server.publish(server.topic, server.message);
             System.out.println(server.message.isRetained() + "------ratained状态");
-            Thread.sleep(500L);
+            Thread.sleep(1000L);
         }
+        // 强制退出 不然tcp链接会一直挂起
         System.exit(0);
 
     }
