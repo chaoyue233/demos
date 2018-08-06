@@ -5,7 +5,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class Server {
 
-    public static final String HOST = "tcp://192.168.10.201:61613";
+    public static final String HOST = "tcp://chaoyue.test.com.com:61613";
     public static final String TOPIC = "chaoyue_test_topic";
     private static final String clientid = "chaoyue_server";
 
@@ -13,7 +13,7 @@ public class Server {
     private MqttTopic topic;
     private MqttTopic topic125;
     private String userName = "admin";
-    private String passWord = "password";
+    private String passWord = "rongyi";
 
     private MqttMessage message;
 
