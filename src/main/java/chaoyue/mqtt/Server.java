@@ -4,8 +4,9 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class Server {
-
-    public static final String HOST = "tcp://chaoyue.test.com:61613";
+    //private static String ip = "192.168.10.201";
+    private static String ip = "180.167.176.82";
+    public static final String HOST = "tcp://"+ip +":61613";
     public static final String TOPIC = "chaoyue_test_topic";
     private static final String clientid = "chaoyue_server";
 

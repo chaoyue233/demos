@@ -9,7 +9,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class Client {
-    public static final String HOST = "tcp://chaoyue.test.com:61613";
+    private static String ip = "192.168.10.201";
+    //private static String ip = "180.167.176.82";
+    public static final String HOST = "tcp://" + ip + ":61613";
     public static final String TOPIC = "chaoyue_test_topic";
     private static final String clientid = "chaoyue_client124";
     private MqttClient client;
@@ -43,7 +45,7 @@ public class Client {
 
             client.connect(options);
             //订阅消息
-            int[] Qos  = {1};
+            int[] Qos = {1};
             String[] topic1 = {TOPIC};
             client.subscribe(topic1, Qos);
 
